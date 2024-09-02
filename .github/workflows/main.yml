@@ -45,24 +45,36 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
-      # 创建 Release
+
+      - name: get jar version
+        id: get_version
+        run: |
+          VERSION=$(./gradlew -q printVersion)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: generate tag name
+        id: generate_tag
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          TAG_NAME="${{ env.VERSION }}-${SHORT_SHA}"
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
       - name: create release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }}
-          release_name: Release ${{ github.sha }}
+          tag_name: ${{ env.TAG_NAME }}
+          release_name: Release ${{ env.TAG_NAME }}
           draft: false
           prerelease: false
           generate_release_notes: true
 
-      # 上传 JAR 文件到 Release
       - name: upload release asset
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/libs/*.jar
-          asset_name: my-kotlin-app-${{ github.sha }}.jar
+          asset_name: jslib-${{ env.TAG_NAME }}.jar
           asset_content_type: application/java-archive
