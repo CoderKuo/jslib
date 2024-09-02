@@ -1,4 +1,3 @@
-import org.gradle.internal.impldep.org.apache.http.client.ResponseHandler
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -23,3 +22,8 @@ kotlin {
     jvmToolchain(8)
 }
 
+tasks.register("printVersion") {
+    doLast {
+        print(version)
+    }
+}
