@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 增加这行代码提升权限
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
