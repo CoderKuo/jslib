@@ -45,7 +45,16 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+      # 列出生成的文件，以确保 jar 文件存在
+      - name: list build directory
+        run: ls -la build/libs/
 
+      # 确认通配符匹配到的文件
+      - name: check jar file
+        run: |
+          JAR_FILE=$(ls build/libs/*.jar)
+          echo "JAR_FILE=$JAR_FILE"
+          echo "JAR_FILE=$JAR_FILE" >> $GITHUB_ENV
       - name: get jar version
         id: get_version
         run: |
@@ -75,6 +84,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/libs
+          asset_path: ${{ env.JAR_FILE }}
           asset_name: jslib-${{ env.TAG_NAME }}.jar
           asset_content_type: application/java-archive
