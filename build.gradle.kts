@@ -1,9 +1,10 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import groovy.util.Node
 import groovy.util.NodeList
 
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "7.1.2" apply true
     id("maven-publish")
 }
 
@@ -15,14 +16,16 @@ repositories {
 }
 
 dependencies {
-    shadow(fileTree("libs"))
+    implementation(fileTree("libs"))
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks.build{
+    dependsOn(tasks.shadowJar)
 }
-kotlin {
-    jvmToolchain(8)
+
+tasks.withType<ShadowJar> {
+    archiveClassifier=""
+    exclude("**/kotlin/**","**/org/intellij/**","**/org/jetbrains/**")
 }
 
 tasks.register("printVersion") {
