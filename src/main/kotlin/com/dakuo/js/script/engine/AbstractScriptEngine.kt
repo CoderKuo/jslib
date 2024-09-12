@@ -85,7 +85,7 @@ abstract class AbstractScriptEngine {
     abstract fun invoke(
         compiledScript: com.dakuo.js.script.CompiledScript,
         function: String,
-        map: Map<String, Any>?,
+        map: Map<String, Any?>?,
         vararg args: Any
     ): Any?
 

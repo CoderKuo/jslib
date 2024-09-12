@@ -15,7 +15,7 @@ class NashornEngineOpenJDK: AbstractScriptEngine() {
     override fun invoke(
         compiledScript: CompiledScript,
         function: String,
-        map: Map<String, Any>?,
+        map: Map<String, Any?>?,
         vararg args: Any
     ): Any? {
         val newObject:  org.openjdk.nashorn.api.scripting.ScriptObjectMirror =
