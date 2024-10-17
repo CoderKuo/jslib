@@ -18,7 +18,7 @@ class NashornEngineJDK: AbstractScriptEngine() {
         map: Map<String, Any?>?,
         vararg args: Any
     ): Any? {
-        val newObject: ScriptObjectMirror = (compiledScript as Invocable).invokeFunction("newObject") as ScriptObjectMirror
+        val newObject: ScriptObjectMirror = (compiledScript.scriptEngine as Invocable).invokeFunction("newObject") as ScriptObjectMirror
         map?.let {
             (newObject.proto as ScriptObjectMirror).putAll(it)
         }
